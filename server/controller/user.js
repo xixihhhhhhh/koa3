@@ -21,29 +21,30 @@ router.post("/enroll", async ctx => {
         return
     } else {
         console.log('succ')
-        delete newUser.phone
         ctx.suc("添加成功", newUser)
     }
 })
 
 router.post("/login", async ctx => {
     let data = ctx.request.body
-    console.log(data);
     const [err, newUser] = await to(
         userModel.findAll({
             where: {
-                name: this.name
+                name: data.name
             },
             raw: true
         })
     )
     if (err) {
-        ctx.err("添加失败", err)
+        ctx.err("登录失败", err)
         console.log('err', err)
         return
     } else {
-        console.log('succ')
-        ctx.suc("添加成功", newUser)
+        if ((newUser[0].password + '') === (data.password + '')) {
+            ctx.suc("登录成功!", newUser)
+        } else {
+            ctx.err("密码错误！", err)
+        }
     }
 })
 
