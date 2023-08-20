@@ -41,9 +41,33 @@ router.post("/login", async ctx => {
         return
     } else {
         if ((newUser[0].password + '') === (data.password + '')) {
-            ctx.suc("登录成功!", newUser)
+            ctx.suc("登录成功!", newUser[0])
         } else {
             ctx.err("密码错误！", err)
+        }
+    }
+})
+
+router.post("/find", async ctx => {
+    let data = ctx.request.body
+    const [err, newUser] = await to(
+        userModel.findAll({
+            where: {
+                name: data.name
+            },
+            raw: true
+        })
+    )
+    if (err) {
+        ctx.err("查找失败", err)
+        console.log('err', err)
+        return
+    } else {
+        console.log(newUser)
+        if (newUser.length > 0) {
+            ctx.suc("查找成功!", newUser[0])
+        } else {
+            ctx.err("查找失败,用户不存在", newUser)
         }
     }
 })
