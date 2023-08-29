@@ -29,7 +29,6 @@ router.get('/list', async ctx => {
  */
 router.post('/add', async ctx => {
     let data = ctx.request.body
-    console.log(ctx.request)
     //判断所传参数是否为空值
     if (ctx.empty(["name", "phone"])) {
         return
