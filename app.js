@@ -41,8 +41,6 @@ const io = new Server(server, {
     },
 });
 
-
-
 const chatModel = require("./server/model/Chat")
 io.on('connection', (socket) => {
     // 传进来的socket变量为当前本次链接，而io是全局链接
