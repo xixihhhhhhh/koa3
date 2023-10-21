@@ -72,4 +72,29 @@ router.post("/find", async ctx => {
     }
 })
 
+router.post("/upbateName", async ctx => {
+    let data = ctx.request.body
+
+    const [err, succ] = await to(
+        userModel.update({ name: data.user_name }, {
+            where: {
+                id: data.user_id,
+            },
+            raw: true
+        })
+    )
+    if (err) {
+        ctx.err("修改名字失败", err)
+        console.log('err', err)
+        return
+    } else {
+        console.log(succ)
+        if (succ.length > 0) {
+            ctx.suc("修改名字成功!", succ)
+        } else {
+            ctx.err("修改名字失败", err)
+        }
+    }
+})
+
 module.exports = router.routes()
